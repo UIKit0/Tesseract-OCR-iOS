@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <TesseractOCR/TesseractOCR.h>
 
-@interface G8ViewController : UIViewController <TesseractDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface G8ViewController : UIViewController <TesseractDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageToRecognize;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-- (IBAction)openCamera:(id)sender;
-- (IBAction)recognizeSampleImage:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+- (IBAction)startTest:(id)sender;
 
 @end
