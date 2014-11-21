@@ -14,6 +14,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.progressLabel.text = @"";
 }
 
 -(void)recognizeImageWithTesseract:(UIImage *)img
@@ -33,19 +34,22 @@
     NSLog(@"%@", recognizedText);
     
     dispatch_async(dispatch_get_main_queue(), ^{
-		[self.activityIndicator stopAnimating];
+        [self.activityIndicator stopAnimating];
+        self.progressLabel.text = @"";
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tesseract OCR iOS" message:recognizedText delegate:nil cancelButtonTitle:@"Yeah!" otherButtonTitles:nil];
         [alert show];
         
     });
-    
     tesseract = nil; //deallocate and free all memory
 }
 
 
 - (BOOL)shouldCancelImageRecognitionForTesseract:(Tesseract*)tesseract {
-    NSLog(@"progress: %d", tesseract.progress);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.progressLabel.text = [NSString stringWithFormat:@"Progress: %d%%", [tesseract progress]];
+    });
+    
     return NO;  // return YES, if you need to interrupt tesseract before it finishes
 }
 
@@ -108,6 +112,7 @@
     if ([segue.identifier isEqualToString:@"displayModal"]) {
         NSIndexPath *indexPath = sender;
         ModalViewController* dest = segue.destinationViewController;
+        
         dest.image = [self imageIndexed:indexPath.row];
         dest.title = [NSString stringWithFormat:@"image_%02d.jpg", indexPath.row];
     }
