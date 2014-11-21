@@ -11,9 +11,133 @@
 
 @implementation G8ViewController
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.data = @[
+                  @{
+                      @"path": @"image_00.jpg",
+                      @"size": @13062,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_01.jpg",
+                      @"size": @128777,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_02.jpg",
+                      @"size": @11356,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_03.jpg",
+                      @"size": @153842,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_04.jpg",
+                      @"size": @202530,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_05.jpg",
+                      @"size": @103084,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_06.jpg",
+                      @"size": @156564,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_07.jpg",
+                      @"size": @76523,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_08.jpg",
+                      @"size": @93771,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_09.jpg",
+                      @"size": @132985,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_10.jpg",
+                      @"size": @256101,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_11.jpg",
+                      @"size": @2371330,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_12.jpg",
+                      @"size": @1376411,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_13.jpg",
+                      @"size": @16965,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      },
+                  @{
+                      @"path": @"image_14.jpg",
+                      @"size": @103639,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      }
+                  ];
+    
     self.progressLabel.text = @"";
 }
 
@@ -50,7 +174,7 @@
         self.progressLabel.text = [NSString stringWithFormat:@"Progress: %d%%", [tesseract progress]];
     });
     
-    return NO;  // return YES, if you need to interrupt tesseract before it finishes
+    return NO; // return YES, if you need to interrupt tesseract before it finishes
 }
 
 - (void)didReceiveMemoryWarning
@@ -61,7 +185,7 @@
 
 - (IBAction)startTest:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self recognizeImageWithTesseract:[self imageIndexed:3]];
+        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[2][@"path"]]];
 	});
 }
 
@@ -70,11 +194,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 15;
-}
-
-- (UIImage *)imageIndexed:(NSInteger)index {
-    NSString* file_name = [NSString stringWithFormat:@"image_%02d.jpg", index];
-    return [UIImage imageNamed:file_name];
 }
 
 
@@ -88,8 +207,9 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.imageView.image = [self imageIndexed:indexPath.row];
-    cell.detailTextLabel.text = @"";
+    cell.imageView.image = [UIImage imageNamed:self.data[indexPath.row][@"path"]];
+    cell.detailTextLabel.text = @"14s / 25s";
+    cell.textLabel.text = @"";
     
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
@@ -98,7 +218,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self recognizeImageWithTesseract:[self imageIndexed:indexPath.row]];
+        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[indexPath.row][@"path"]]];
     });
 }
 
@@ -113,7 +233,8 @@
         NSIndexPath *indexPath = sender;
         ModalViewController* dest = segue.destinationViewController;
         
-        dest.image = [self imageIndexed:indexPath.row];
+        dest.image = [UIImage imageNamed:self.data[indexPath.row][@"path"]];
+        dest.size = self.data[indexPath.row][@"size"];
         dest.title = [NSString stringWithFormat:@"image_%02d.jpg", indexPath.row];
     }
 }

@@ -15,7 +15,7 @@
     [super viewDidLoad];
     self.navigationBar.topItem.title = self.title;
     self.imageView.image = self.image;
-    self.detailLabel.text = [NSString stringWithFormat:@"%.0f x %.0f pixels", self.image.size.width, self.image.size.height];
+    self.detailLabel.text = [NSString stringWithFormat:@"%.0f x %.0f pixels - %d KB", self.image.size.width, self.image.size.height, ([self.size intValue]/1024)];
     
 }
 

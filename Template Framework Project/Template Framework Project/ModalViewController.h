@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel* detailLabel;
 
 @property UIImage* image;
+@property NSNumber* size;
 
 - (IBAction)dismiss:(id)sender;
 

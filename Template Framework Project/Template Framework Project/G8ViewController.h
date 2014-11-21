@@ -18,4 +18,6 @@
 
 - (IBAction)startTest:(id)sender;
 
+@property NSArray* data;
+
 @end
