@@ -8,12 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <TesseractOCR/TesseractOCR.h>
+#import "ModalViewController.h"
 
 @interface G8ViewController : UIViewController <TesseractDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
-@property (weak, nonatomic) IBOutlet UIImageView *imageToRecognize;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)startTest:(id)sender;

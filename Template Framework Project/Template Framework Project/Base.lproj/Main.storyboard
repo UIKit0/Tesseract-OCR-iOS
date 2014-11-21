@@ -8,7 +8,6 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
                 <viewController id="vXZ-lx-hvc" customClass="G8ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="js6-1D-lpc"/>
@@ -58,10 +57,51 @@
                     <connections>
                         <outlet property="activityIndicator" destination="msa-Y5-mNu" id="z0b-ab-Bwr"/>
                         <outlet property="tableView" destination="Kqe-qz-aBG" id="WFS-Wh-0Xn"/>
+                        <segue destination="djV-ey-gRb" kind="modal" identifier="displayModal" id="nac-Qw-FKn"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="391" y="241"/>
+        </scene>
+        <!--Modal View Controller-->
+        <scene sceneID="nXS-Gy-aay">
+            <objects>
+                <viewController id="djV-ey-gRb" customClass="ModalViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="x8K-y6-8ta"/>
+                        <viewControllerLayoutGuide type="bottom" id="pOb-bF-176"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="c7Y-hr-bA5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q7T-os-Xzz">
+                                <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                            </imageView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KKM-l6-W2g">
+                                <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                <items>
+                                    <navigationItem title="ads" id="StJ-HD-drZ">
+                                        <barButtonItem key="rightBarButtonItem" title="Done" id="mbn-6e-c4h">
+                                            <connections>
+                                                <action selector="dismiss:" destination="djV-ey-gRb" id="f0J-Lj-7zI"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="q7T-os-Xzz" id="xM4-XS-RN1"/>
+                        <outlet property="navigationBar" destination="KKM-l6-W2g" id="yz8-bu-d2T"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ust-4h-J33" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="848" y="241"/>
         </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

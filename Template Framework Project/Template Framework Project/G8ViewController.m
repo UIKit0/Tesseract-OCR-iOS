@@ -8,43 +8,24 @@
 
 #import "G8ViewController.h"
 
-@interface G8ViewController ()
-{
-    
-}
-@end
 
 @implementation G8ViewController
-
-/****README****/
-/*
- Tessdata folder is into the template project..
- TesseractOCR.framework is linked into the template project under the Framework group. It's builded by the main project.
- 
- If you are using iOS7 or greater, import libstdc++.6.0.9.dylib (not libstdc++)!!!!!
- 
- Follow the readme at https://github.com/gali8/Tesseract-OCR-iOS for first step.
- */
-
-
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self startTest:nil];
 }
 
 -(void)recognizeImageWithTesseract:(UIImage *)img
 {
     dispatch_async(dispatch_get_main_queue(), ^{
 		[self.activityIndicator startAnimating];
-        self.imageToRecognize.image = img;
 	});
     
     Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"eng"];
     tesseract.delegate = self;
     
-    [tesseract setImage:[img blackAndWhite]];
+    [tesseract setImage:img];
     [tesseract recognize];
     
     NSString *recognizedText = [tesseract recognizedText];
@@ -75,9 +56,8 @@
 
 
 - (IBAction)startTest:(id)sender {
-    NSLog(@"start");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self recognizeImageWithTesseract:[UIImage imageNamed:@"image_sample.jpg"]];
+        [self recognizeImageWithTesseract:[self imageIndexed:3]];
 	});
 }
 
@@ -85,24 +65,54 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 10;
+    return 15;
+}
+
+- (UIImage *)imageIndexed:(NSInteger)index {
+    NSString* file_name = [NSString stringWithFormat:@"image_%02d.jpg", index];
+    return [UIImage imageNamed:file_name];
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"SimpleTableCell";
+    static NSString *simpleTableIdentifier = @"MailCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.imageView.image = [UIImage imageNamed:@"image_sample.jpg"];
-    cell.textLabel.text = @"test";
+    cell.imageView.image = [self imageIndexed:indexPath.row];
+    cell.detailTextLabel.text = @"";
+    
+    cell.accessoryType = UITableViewCellAccessoryDetailButton;
+    
     return cell;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+        [self recognizeImageWithTesseract:[self imageIndexed:indexPath.row]];
+    });
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+    [self performSegueWithIdentifier:@"displayModal" sender:indexPath];
+
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"displayModal"]) {
+        NSIndexPath *indexPath = sender;
+        ModalViewController* dest = segue.destinationViewController;
+        dest.image = [self imageIndexed:indexPath.row];
+        dest.title = [NSString stringWithFormat:@"image_%02d.jpg", indexPath.row];
+    }
+}
+
 
 
 
