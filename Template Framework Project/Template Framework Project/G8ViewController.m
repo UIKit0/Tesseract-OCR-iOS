@@ -7,6 +7,7 @@
 //
 
 #import "G8ViewController.h"
+#import "AFNetworking.h"
 
 
 @implementation G8ViewController
@@ -141,11 +142,21 @@
     self.progressLabel.text = @"";
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+
+
+#pragma mark -
+#pragma mark tesseract
+
+
 -(void)recognizeImageWithTesseract:(UIImage *)img
 {
     dispatch_async(dispatch_get_main_queue(), ^{
 		[self.activityIndicator startAnimating];
-//        [[UIScreen mainScreen] setBrightness:1.0];
 	});
     
     Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"eng"];
@@ -160,7 +171,6 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.activityIndicator stopAnimating];
-//        [[UIScreen mainScreen] setBrightness:0.2];
         self.progressLabel.text = @"";
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tesseract OCR iOS" message:recognizedText delegate:nil cancelButtonTitle:@"Yeah!" otherButtonTitles:nil];
@@ -170,7 +180,6 @@
     tesseract = nil; //deallocate and free all memory
 }
 
-
 - (BOOL)shouldCancelImageRecognitionForTesseract:(Tesseract*)tesseract {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.progressLabel.text = [NSString stringWithFormat:@"Progress: %d%%", [tesseract progress]];
@@ -179,18 +188,59 @@
     return NO; // return YES, if you need to interrupt tesseract before it finishes
 }
 
-- (void)didReceiveMemoryWarning
+
+
+
+#pragma mark -
+#pragma mark tesseract cloud
+
+
+
+- (void)recognizeImageWithTesseractCloud:(UIImage *)image
 {
-    [super didReceiveMemoryWarning];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    
+    NSData* imageData = UIImageJPEGRepresentation(image, 1);
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    NSString *imagePostUrl = @"http://localhost:8000";
+    
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:imagePostUrl parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        [formData appendPartWithFileData:imageData name:@"photo" fileName:@"asd" mimeType:@"image/jpeg"];
+    }];
+    
+    AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success: ^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"response: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    op.responseSerializer = [AFJSONResponseSerializer serializer];
+    [[NSOperationQueue mainQueue] addOperation:op];
+    
+#pragma clang diagnostic pop
 }
+
+
+
+
+#pragma mark -
+#pragma mark test button
 
 
 - (IBAction)startTest:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[2][@"path"]]];
+//        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[2][@"path"]]];
+        [self recognizeImageWithTesseractCloud:[UIImage imageNamed:self.data[1][@"path"]]];
 	});
 }
 
+
+
+
+#pragma mark -
+#pragma mark table view
 
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -229,6 +279,14 @@
     [self performSegueWithIdentifier:@"displayModal" sender:indexPath];
 
 }
+
+
+
+
+
+
+#pragma mark -
+#pragma mark modal segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
