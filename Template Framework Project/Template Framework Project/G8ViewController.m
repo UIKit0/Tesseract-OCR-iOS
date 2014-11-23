@@ -145,6 +145,7 @@
 {
     dispatch_async(dispatch_get_main_queue(), ^{
 		[self.activityIndicator startAnimating];
+//        [[UIScreen mainScreen] setBrightness:1.0];
 	});
     
     Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"eng"];
@@ -159,6 +160,7 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.activityIndicator stopAnimating];
+//        [[UIScreen mainScreen] setBrightness:0.2];
         self.progressLabel.text = @"";
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tesseract OCR iOS" message:recognizedText delegate:nil cancelButtonTitle:@"Yeah!" otherButtonTitles:nil];
@@ -199,7 +201,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *simpleTableIdentifier = @"MailCell";
+    static NSString *simpleTableIdentifier = @"MainCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
     
@@ -207,7 +209,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:simpleTableIdentifier];
     }
     
-    cell.imageView.image = [UIImage imageNamed:self.data[indexPath.row][@"path"]];
+    NSString *thumbnail_path = [NSString stringWithFormat:@"thumb_%@", self.data[indexPath.row][@"path"]];
+    cell.imageView.image = [UIImage imageNamed:thumbnail_path];
     cell.detailTextLabel.text = @"14s / 25s";
     cell.textLabel.text = @"";
     
@@ -235,7 +238,7 @@
         
         dest.image = [UIImage imageNamed:self.data[indexPath.row][@"path"]];
         dest.size = self.data[indexPath.row][@"size"];
-        dest.title = [NSString stringWithFormat:@"image_%02d.jpg", indexPath.row];
+        dest.title = [NSString stringWithFormat:@"image_%02ld.jpg", (long)indexPath.row];
     }
 }
 
