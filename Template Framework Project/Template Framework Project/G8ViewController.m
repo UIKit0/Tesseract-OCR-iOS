@@ -18,23 +18,7 @@
     [super viewDidLoad];
     self.data = @[
                   [@{
-                      @"path": @"image_00.jpg",
-                      @"size": @13062,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_01.jpg",
-                      @"size": @128777,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_02.jpg",
+                      @"path": @"image_0.jpg",
                       @"size": @11356,
                       @"offline_secs": @0,
                       @"online_secs": @0,
@@ -42,63 +26,31 @@
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_03.jpg",
-                      @"size": @153842,
+                      @"path": @"image_1.jpg",
+                      @"size": @13062,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_04.jpg",
-                      @"size": @202530,
+                      @"path": @"image_2.jpg",
+                      @"size": @128777,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_05.jpg",
-                      @"size": @103084,
+                      @"path": @"image_3.jpg",
+                      @"size": @103639,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_06.jpg",
-                      @"size": @156564,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_07.jpg",
-                      @"size": @76523,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_08.jpg",
-                      @"size": @93771,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_09.jpg",
-                      @"size": @132985,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_10.jpg",
+                      @"path": @"image_4.jpg",
                       @"size": @256101,
                       @"offline_secs": @0,
                       @"online_secs": @0,
@@ -106,32 +58,24 @@
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_11.jpg",
+                      @"path": @"image_5.jpg",
+                      @"size": @103084,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      } mutableCopy],
+                  [@{
+                      @"path": @"image_6.jpg",
+                      @"size": @156564,
+                      @"offline_secs": @0,
+                      @"online_secs": @0,
+                      @"offline_finished": @NO,
+                      @"online_finished": @NO
+                      } mutableCopy],
+                  [@{
+                      @"path": @"image_7.jpg",
                       @"size": @2371330,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_12.jpg",
-                      @"size": @1376411,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_13.jpg",
-                      @"size": @16965,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
-                  [@{
-                      @"path": @"image_14.jpg",
-                      @"size": @103639,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
@@ -268,7 +212,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 15;
+    return 8;
 }
 
 
