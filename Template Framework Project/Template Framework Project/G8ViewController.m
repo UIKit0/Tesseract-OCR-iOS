@@ -17,126 +17,126 @@
 {
     [super viewDidLoad];
     self.data = @[
-                  @{
+                  [@{
                       @"path": @"image_00.jpg",
                       @"size": @13062,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_01.jpg",
                       @"size": @128777,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_02.jpg",
                       @"size": @11356,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_03.jpg",
                       @"size": @153842,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_04.jpg",
                       @"size": @202530,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_05.jpg",
                       @"size": @103084,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_06.jpg",
                       @"size": @156564,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_07.jpg",
                       @"size": @76523,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_08.jpg",
                       @"size": @93771,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_09.jpg",
                       @"size": @132985,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_10.jpg",
                       @"size": @256101,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_11.jpg",
                       @"size": @2371330,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_12.jpg",
                       @"size": @1376411,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_13.jpg",
                       @"size": @16965,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      },
-                  @{
+                      } mutableCopy],
+                  [@{
                       @"path": @"image_14.jpg",
                       @"size": @103639,
                       @"offline_secs": @0,
                       @"online_secs": @0,
                       @"offline_finished": @NO,
                       @"online_finished": @NO
-                      }
+                      } mutableCopy]
                   ];
     
     self.progressLabel.text = @"";
@@ -153,8 +153,11 @@
 #pragma mark tesseract
 
 
--(void)recognizeImageWithTesseract:(UIImage *)img
+-(void)recognizeImageWithTesseract:(NSInteger)index
 {
+    NSDate *start = [NSDate date];
+    UIImage *image = [UIImage imageNamed:self.data[index][@"path"]];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
 		[self.activityIndicator startAnimating];
 	});
@@ -162,19 +165,22 @@
     Tesseract* tesseract = [[Tesseract alloc] initWithLanguage:@"eng"];
     tesseract.delegate = self;
     
-    [tesseract setImage:img];
+    [tesseract setImage:image];
     [tesseract recognize];
     
     NSString *recognizedText = [tesseract recognizedText];
     
+    NSTimeInterval timeInterval = 0 - [start timeIntervalSinceNow];
     NSLog(@"%@", recognizedText);
+    
+    
+    self.data[index][@"offline_finished"] = @YES;
+    self.data[index][@"offline_secs"] = @( timeInterval );
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.activityIndicator stopAnimating];
         self.progressLabel.text = @"";
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Tesseract OCR iOS" message:recognizedText delegate:nil cancelButtonTitle:@"Yeah!" otherButtonTitles:nil];
-        [alert show];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
         
     });
     tesseract = nil; //deallocate and free all memory
@@ -196,26 +202,55 @@
 
 
 
-- (void)recognizeImageWithTesseractCloud:(UIImage *)image
+- (void)recognizeImageWithTesseractCloud:(NSInteger)index
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+    NSDate *start = [NSDate date];
+    
+    UIImage *image = [UIImage imageNamed:self.data[index][@"path"]];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.activityIndicator startAnimating];
+        self.progressLabel.text = @"Sending...";
+    });
     
     NSData* imageData = UIImageJPEGRepresentation(image, 1);
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    NSString *imagePostUrl = @"http://localhost:8000";
+    NSString *imagePostUrl = @"http://poorias-macbook-pro.local:8000";
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:imagePostUrl parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:imageData name:@"photo" fileName:@"asd" mimeType:@"image/jpeg"];
     }];
     
-    AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request success: ^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"response: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+    AFHTTPRequestOperation *op = [manager HTTPRequestOperationWithRequest:request
+          success: ^(AFHTTPRequestOperation *operation, id responseObject) {
+              
+              NSLog(@"response: %@", responseObject);
+              
+              NSTimeInterval timeInterval = 0 - [start timeIntervalSinceNow];
+              
+              self.data[index][@"online_finished"] = @YES;
+              self.data[index][@"online_secs"] = @( timeInterval );
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [self.activityIndicator stopAnimating];
+                  self.progressLabel.text = @"";
+                  [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
+              });
+
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              
+              NSLog(@"Error: %@", error);
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  [self.activityIndicator stopAnimating];
+                  self.progressLabel.text = @"Error!";
+              });
+              
+          }];
+    
     op.responseSerializer = [AFJSONResponseSerializer serializer];
     [[NSOperationQueue mainQueue] addOperation:op];
     
@@ -231,8 +266,7 @@
 
 - (IBAction)startTest:(id)sender {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-//        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[2][@"path"]]];
-        [self recognizeImageWithTesseractCloud:[UIImage imageNamed:self.data[1][@"path"]]];
+        [self recognizeImageWithTesseractCloud:1];
 	});
 }
 
@@ -261,8 +295,29 @@
     
     NSString *thumbnail_path = [NSString stringWithFormat:@"thumb_%@", self.data[indexPath.row][@"path"]];
     cell.imageView.image = [UIImage imageNamed:thumbnail_path];
-    cell.detailTextLabel.text = @"14s / 25s";
+    
+    // construct the text, e.g., "--/10s" or "12s/15s"
+    NSString *offlineDetailText = @"";
+    BOOL offline_finished = [self.data[indexPath.row][@"offline_finished"] boolValue];
+    if (offline_finished) {
+        NSNumber *offline_secs = self.data[indexPath.row][@"offline_secs"];
+        offlineDetailText = [NSString stringWithFormat:@"%.2fs", [offline_secs floatValue]];
+    } else {
+        offlineDetailText = @"--";
+    }
+    
+    NSString *onlineDetailText = @"";
+    BOOL online_finished = [self.data[indexPath.row][@"online_finished"] boolValue];
+    if (online_finished) {
+        NSNumber *online_secs = self.data[indexPath.row][@"online_secs"];
+        onlineDetailText = [NSString stringWithFormat:@"%.2fs", [online_secs floatValue]];
+    } else {
+        onlineDetailText = @"--";
+    }
+    
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@", offlineDetailText, onlineDetailText];
     cell.textLabel.text = @"";
+    
     
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
     
@@ -271,7 +326,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [self recognizeImageWithTesseract:[UIImage imageNamed:self.data[indexPath.row][@"path"]]];
+        if ([self.localSwitch isOn]) {
+            [self recognizeImageWithTesseractCloud:indexPath.row];
+        } else {
+            [self recognizeImageWithTesseract:indexPath.row];
+        }
+
     });
 }
 
