@@ -17,8 +17,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch* localSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
 
-- (IBAction)startTest:(id)sender;
-
 @property NSArray* data;
 
 @end
