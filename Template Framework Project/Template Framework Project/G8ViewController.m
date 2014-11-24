@@ -219,7 +219,8 @@
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    NSString *imagePostUrl = @"http://poorias-macbook-pro.local:8000";
+//    NSString *imagePostUrl = @"http://poorias-macbook-pro.local:8000";
+    NSString *imagePostUrl = @"http://104.236.190.152";
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:imagePostUrl parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         [formData appendPartWithFileData:imageData name:@"photo" fileName:@"asd" mimeType:@"image/jpeg"];
