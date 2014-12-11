@@ -50,13 +50,21 @@
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_4.jpg",
-                      @"size": @256101,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy],
+                     @"path": @"image_4.jpg",
+                     @"size": @256101,
+                     @"offline_secs": @0,
+                     @"online_secs": @0,
+                     @"offline_finished": @NO,
+                     @"online_finished": @NO
+                     } mutableCopy],
+                  [@{
+                     @"path": @"image_4_2.jpg",
+                     @"size": @19992,
+                     @"offline_secs": @0,
+                     @"online_secs": @0,
+                     @"offline_finished": @NO,
+                     @"online_finished": @NO
+                     } mutableCopy],
                   [@{
                       @"path": @"image_5.jpg",
                       @"size": @103084,
@@ -74,13 +82,21 @@
                       @"online_finished": @NO
                       } mutableCopy],
                   [@{
-                      @"path": @"image_7.jpg",
-                      @"size": @2371330,
-                      @"offline_secs": @0,
-                      @"online_secs": @0,
-                      @"offline_finished": @NO,
-                      @"online_finished": @NO
-                      } mutableCopy]
+                     @"path": @"image_7.jpg",
+                     @"size": @2371330,
+                     @"offline_secs": @0,
+                     @"online_secs": @0,
+                     @"offline_finished": @NO,
+                     @"online_finished": @NO
+                     } mutableCopy],
+                  [@{
+                     @"path": @"image_7_2.jpg",
+                     @"size": @363112,
+                     @"offline_secs": @0,
+                     @"online_secs": @0,
+                     @"offline_finished": @NO,
+                     @"online_finished": @NO
+                     } mutableCopy]
                   ];
     
     self.progressLabel.text = @"";
@@ -163,7 +179,8 @@
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-//    NSString *imagePostUrl = @"http://poorias-macbook-pro.local:8000";
+//        NSString *imagePostUrl = @"http://poorias-macbook-pro.local:8000";
+//        NSString *imagePostUrl = @"http://169.254.251.230:8000";
     NSString *imagePostUrl = @"http://104.236.190.152";
     
     NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:imagePostUrl parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -212,7 +229,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 10;
 }
 
 
@@ -249,7 +266,7 @@
     }
     
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ / %@", offlineDetailText, onlineDetailText];
-    cell.textLabel.text = @"";
+    cell.textLabel.text = [self.data[indexPath.row][@"path"] stringByReplacingOccurrencesOfString:@".jpg" withString:@""];
     
     
     cell.accessoryType = UITableViewCellAccessoryDetailButton;
